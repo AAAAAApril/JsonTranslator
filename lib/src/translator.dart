@@ -42,18 +42,18 @@ class Translator {
       );
       if (element == null) {
         stderr.writeln(
-          'ERROR: There is no div[class="result-container"] element in translate result html document.',
+          'ERROR: There is no div[class="result-container"] element in translate result html document.\n',
         );
         return '';
       }
       return element.text;
     } catch (_) {
       stderr.writeln(
-        'ERROR: Error when translate [$text] to language [$targetCode] : BEGIN',
+        'ERROR: Error when translate [$text] to language [$targetCode] : BEGIN\n',
       );
-      stderr.writeln(_.toString());
+      stderr.writeln(_.toString() + '\n');
       stderr.writeln(
-        'ERROR: Error when translate [$text] to language [$targetCode] : END',
+        'ERROR: Error when translate [$text] to language [$targetCode] : END\n',
       );
       return '';
     }
