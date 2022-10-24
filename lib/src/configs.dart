@@ -46,7 +46,7 @@ class PubspecConfig {
   Future<void> readConfigs() async {
     final File? pubspecFile = getPubspecFile();
     if (pubspecFile == null) {
-      throw Exception('未找到 "pubspec.yaml" 文件');
+      throw Exception('未找到 [pubspec.yaml] 文件');
     }
 
     /// pubspec.yaml  文件内容
@@ -55,7 +55,7 @@ class PubspecConfig {
     ///配置节点
     final YamlMap? parentNode = yamlContent[configNodeName];
     if (parentNode == null) {
-      throw Exception('未找到 "$configNodeName" 节点，该节点用于添加配置信息');
+      throw Exception('未找到 [$configNodeName] 节点，该节点用于添加配置信息');
     }
 
     /// 找源语言编码
@@ -66,20 +66,26 @@ class PubspecConfig {
     //没找到
     else {
       throw Exception(
-        '未找到 "$sourceLanguageNodeName" 节点，或者节点值不合法，该节点用于设置源语言编码',
+        '未找到 [$sourceLanguageNodeName] 节点，或者节点值 [$sourceLC] 不合法，该节点用于设置源语言编码',
       );
     }
 
     /// 找目标语言编码列表
     final dynamic targetLCs = parentNode[targetLanguagesNodeName];
     if (targetLCs is String && targetLCs.isNotEmpty) {
-      targetLanguages =
-          targetLCs.split(',').map<Language>(Language.fromString).toList();
+      final List<String> codes = targetLCs.split(',');
+      codes.removeWhere((element) => element.isEmpty);
+      if (codes.isEmpty) {
+        throw Exception(
+          '节点 [$targetLanguagesNodeName] 值 [$targetLCs] 不合法，该节点用于设置目标语言编码列表',
+        );
+      }
+      targetLanguages = codes.map<Language>(Language.fromString).toList();
     }
     //没找到
     else {
       throw Exception(
-        '未找到 "$targetLanguagesNodeName" 节点，或者节点值不合法，该节点用于设置目标语言编码列表',
+        '未找到 [$targetLanguagesNodeName] 节点，或者节点值 [$targetLCs] 不合法，该节点用于设置目标语言编码列表',
       );
     }
 
@@ -91,7 +97,7 @@ class PubspecConfig {
     //没找到
     else {
       throw Exception(
-        '未找到 "$sourceFilePathNodeName" 节点，或者节点值不合法，该节点用于设置源语言的文件路径',
+        '未找到 [$sourceFilePathNodeName] 节点，或者节点值 [$sourceFile] 不合法，该节点用于设置源语言的文件路径',
       );
     }
 
@@ -103,7 +109,7 @@ class PubspecConfig {
     //没找到
     else {
       throw Exception(
-        '未找到 "$filePrefixNodeName" 节点，或者节点值不合法，该节点用于设置目标语言翻译之后，生成的文件名前缀',
+        '未找到 [$filePrefixNodeName] 节点，或者节点值 [$filePrefix] 不合法，该节点用于设置目标语言翻译之后，生成的文件名前缀',
       );
     }
 
@@ -115,7 +121,7 @@ class PubspecConfig {
     //没找到
     else {
       throw Exception(
-        '未找到 "$fileSuffixNodeName" 节点，或者节点值不合法，该节点用于设置目标语言翻译之后，生成的文件名后缀',
+        '未找到 [$fileSuffixNodeName] 节点，或者节点值 [$fileSuffix] 不合法，该节点用于设置目标语言翻译之后，生成的文件名后缀',
       );
     }
   }

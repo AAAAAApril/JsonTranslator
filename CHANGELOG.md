@@ -1,3 +1,7 @@
+## 0.1.2
+
+* Optimize code.
+
 ## 0.1.1
 
 * Optimize translation and file writing.

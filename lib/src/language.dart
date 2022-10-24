@@ -16,6 +16,11 @@ class Language {
       languageCode = value;
       translateCode = languageCode;
     }
+    if (languageCode.isEmpty || translateCode.isEmpty) {
+      throw Exception(
+        'Code value [$value] is not valid, it must be like [he:iw]',
+      );
+    }
     return Language(
       languageCode: languageCode,
       translateCode: translateCode,
