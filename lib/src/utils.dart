@@ -41,17 +41,15 @@ Future<void> writeText2File({
 ///根据 json 生成文件内容模板
 String createFileContentByJson(Map<dynamic, dynamic> json) {
   //当前循环到的下标
+  final StringBuffer buffer = StringBuffer();
+  buffer.write('{\n');
   int index = 0;
-  return '''
-{
-${json.entries.map<String>((e) {
+  for (var entry in json.entries) {
     index += 1;
-    //当前是否已经是最后一个值了
-    bool last = index == json.length;
-    return '''
-  "${e.key}": "${e.value}"${last ? '' : ','}
-''';
-  }).toList()}
-}
-''';
+    buffer.write(
+      '  "${entry.key}": "${entry.value}"${(index == json.length) ? '' : ','}\n',
+    );
+  }
+  buffer.write('}');
+  return buffer.toString();
 }

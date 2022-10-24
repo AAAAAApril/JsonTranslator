@@ -80,7 +80,13 @@ class Generator {
               text: sourceValue,
             );
             //赋值翻译结果
-            targetJson[sourceKey] = value;
+            if (value.isNotEmpty) {
+              targetJson[sourceKey] = value;
+            }
+            //翻译结果为空，表示出错了
+            else {
+              //ignore 翻译出错时，添加这个结果
+            }
           }
         }
 
