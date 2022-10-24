@@ -1,8 +1,8 @@
-library json_translator;
+library april_json_translator;
 
 import 'dart:io';
 
-import 'package:json_translator/json_translator.dart';
+import 'package:april_json_translator/json_translator.dart';
 
 Future<void> main(List<String> args) async {
   try {
@@ -12,6 +12,7 @@ Future<void> main(List<String> args) async {
     await config.readConfigs();
     stderr.writeln('INFO: Starting translate.\n');
     await generator.generateAsync(config);
+    stderr.writeln('INFO: Translate done.\n');
   } catch (e) {
     stderr.writeln('ERROR: Failed to translate json files.\n$e');
     exit(2);

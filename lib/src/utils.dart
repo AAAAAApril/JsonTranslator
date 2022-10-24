@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 
@@ -11,4 +12,13 @@ File? getPubspecFile() {
   var pubspecFile = File(pubspecFilePath);
 
   return pubspecFile.existsSync() ? pubspecFile : null;
+}
+
+///从文件中读取 json
+Future<Map<dynamic, dynamic>> readJsonFromFile(File file) async {
+  try {
+    return jsonDecode(await file.readAsString()) as Map<dynamic, dynamic>;
+  } catch (_) {
+    return <dynamic, dynamic>{};
+  }
 }
