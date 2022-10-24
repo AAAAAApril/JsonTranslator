@@ -13,13 +13,26 @@ and the Flutter guide for
 
 ## Getting started
 
-&emsp;TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Run `flutter pub global activate april_json_translator` in project Terminal for activate this tool.  
 
 ## Usage
 
-&emsp;TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+1. Add this in your project pubspec.yaml with top level.  
 
-```dart
+```yaml
+april_json_translator:
+  source_code: 'en'
+  target_codes: 'zh'
+  source_file_path: 'lib/l10n/intl_en.arb'
+  file_prefix: 'intl_'
+  file_suffix: '.arb'
 ```
+
+2. Run `flutter pub global run april_json_translator:generate` in project Terminal for translate your json file with this tool.  
+
+---
+
+In the above example, `en` and `zh` are both the code of the language to be translated and the mid-segment name of the file.  
+You can set like `source_code: 'he:iw'` when language code is not the same as your mid-segment name of file.  
+Before the `:` is the mid-segment name of file, after is the code of the language to be translated.  
+If you need to translate into multiple languages, you can set like this `target_codes: 'zh:zh-CN,ja,ko'` just separate the language codes with `,`
