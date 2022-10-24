@@ -32,7 +32,7 @@ class Translator {
       final HttpClientResponse response = await request.close();
       if (response.statusCode != 200) {
         stderr.writeln(
-          'ERROR: Translate [$text] to language [$targetCode] failed with statusCode [${response.statusCode}].\n',
+          'ERROR: Translate to language [$targetCode] failed with statusCode [${response.statusCode}] on [$text].\n',
         );
         return '';
       }
@@ -49,12 +49,9 @@ class Translator {
       return element.text;
     } catch (_) {
       stderr.writeln(
-        'ERROR: Error when translate [$text] to language [$targetCode] : BEGIN\n',
+        'ERROR: Error when translate to language [$targetCode] on [$text] \n',
       );
       stderr.writeln(_.toString() + '\n');
-      stderr.writeln(
-        'ERROR: Error when translate [$text] to language [$targetCode] : END\n',
-      );
       return '';
     }
   }
