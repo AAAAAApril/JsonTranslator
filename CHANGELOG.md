@@ -1,3 +1,7 @@
+## 0.1.1
+
+* Optimize translation and file writing.
+
 ## 0.0.2
 
 * Fix bug.
