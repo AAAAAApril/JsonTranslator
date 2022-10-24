@@ -35,7 +35,7 @@ april_json_translator:
 
 In the above example, `en` and `zh` are both the code of the language to be translated and the
 mid-segment name of the file.After you have finished translating, the file name will be "intl_zh.arb".  
-You can set like `source_code: 'he:iw'` when language code is not the same as your mid-segment name
+You can set like `target_codes: 'he:iw'` when language code is not the same as your mid-segment name
 of file.Then the file name will be "intl_he.arb", and `iw` will be used for translate.  
 If you need to translate into multiple languages, you can set like
 this `target_codes: 'zh:zh-CN,ja,ko'` just separate the language codes with `,`
