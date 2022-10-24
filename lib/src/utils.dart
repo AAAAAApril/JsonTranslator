@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:april_json_translator/src/language.dart';
 import 'package:path/path.dart' as path;
 
 ///项目跟路径
@@ -19,23 +18,8 @@ Future<Map<dynamic, dynamic>> readJsonFromFile(File file) async {
   try {
     return jsonDecode(await file.readAsString()) as Map<dynamic, dynamic>;
   } catch (_) {
-    return const <dynamic, dynamic>{};
+    return <dynamic, dynamic>{};
   }
-}
-
-///将文字写入到目标文件
-Future<void> writeText2File({
-  //目标语言
-  required Language language,
-  //目标文件
-  required File targetFile,
-  //目标文字
-  required String text,
-}) async {
-  stderr.writeln(
-    'INFO: Writing result json into [${language.languageCode}] language file.\n',
-  );
-  await targetFile.writeAsString(text);
 }
 
 ///根据 json 生成文件内容模板
