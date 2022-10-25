@@ -50,12 +50,14 @@ class Generator {
       );
 
       ///对比两个 json 是否相等
-      bool changed = false;
-      for (var entry in resultJson.entries) {
-        //旧 json 中，有任何一个 value ，和新 json 中的对应值不同，则表示发生了变化
-        if (targetJson[entry.key] != entry.value) {
-          changed = true;
-          break;
+      bool changed = targetJson.length != resultJson.length;
+      if (!changed) {
+        for (var entry in resultJson.entries) {
+          //旧 json 中，有任何一个 value ，和新 json 中的对应值不同，则表示发生了变化
+          if (targetJson[entry.key] != entry.value) {
+            changed = true;
+            break;
+          }
         }
       }
 
@@ -91,7 +93,7 @@ class Generator {
     final Map<dynamic, dynamic> resultJson = <dynamic, dynamic>{};
 
     ///翻译器
-    final Translator translator = Translator();
+    Translator? translator;
 
     stderr.writeln(
       'INFO: Language [$targetLanguageCode] translate starting.\n',
@@ -121,7 +123,7 @@ class Generator {
         //其他情况需要翻译
         else {
           ///开始翻译
-          String value = await translator.translate(
+          String value = await (translator ??= Translator()).translate(
             sourceCode: sourceLanguageCode,
             targetCode: targetLanguageCode,
             text: sourceValue,
@@ -159,7 +161,7 @@ class Generator {
     );
 
     ///翻译完成之后，关闭翻译器
-    translator.close();
+    translator?.close();
 
     return resultJson;
   }
