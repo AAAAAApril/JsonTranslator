@@ -1,3 +1,7 @@
+## 0.1.3
+
+* Fix bug from `\n`.
+
 ## 0.1.2
 
 * Optimize code.

@@ -2,12 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 
-///项目跟路径
-String getRootDirectoryPath() => Directory.current.path;
-
 ///获取配置文件
 File? getPubspecFile() {
-  var rootDirPath = getRootDirectoryPath();
+  //项目跟路径
+  var rootDirPath = Directory.current.path;
   var pubspecFilePath = path.join(rootDirPath, 'pubspec.yaml');
   var pubspecFile = File(pubspecFilePath);
   return pubspecFile.existsSync() ? pubspecFile : null;
@@ -29,9 +27,15 @@ String createFileContentByJson(Map<dynamic, dynamic> json) {
   buffer.write('{\n');
   int index = 0;
   for (var entry in json.entries) {
+    dynamic value = entry.value;
+    if (value is String) {
+      if (value.contains('\n')) {
+        value = value.replaceAll('\n', '\\n');
+      }
+    }
     index += 1;
     buffer.write(
-      '  "${entry.key}": "${entry.value}"${(index == json.length) ? '' : ','}\n',
+      '  "${entry.key}": "$value"${(index == json.length) ? '' : ','}\n',
     );
   }
   buffer.write('}');
