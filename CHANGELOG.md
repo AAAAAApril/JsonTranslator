@@ -1,3 +1,7 @@
+## 0.1.4
+
+* The file will not be rewritten when new json is same as the old. 
+
 ## 0.1.3
 
 * Fix bug from `\n`.

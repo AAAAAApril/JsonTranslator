@@ -49,12 +49,30 @@ class Generator {
         targetJson: targetJson,
       );
 
-      ///翻译完一个语言之后，立即将结果写入文件
-      await targetFile.writeAsString(createFileContentByJson(resultJson));
+      ///对比两个 json 是否相等
+      bool changed = false;
+      for (var entry in resultJson.entries) {
+        //旧 json 中，有任何一个 value ，和新 json 中的对应值不同，则表示发生了变化
+        if (targetJson[entry.key] != entry.value) {
+          changed = true;
+          break;
+        }
+      }
 
-      stderr.writeln(
-        'INFO: Write result json into [${language.languageCode}] language file succeed.\n',
-      );
+      //改变了
+      if (changed) {
+        ///将结果写入文件
+        await targetFile.writeAsString(createFileContentByJson(resultJson));
+        stderr.writeln(
+          'INFO: Write result json into [${language.languageCode}] language file succeed.\n',
+        );
+      }
+      //没变
+      else {
+        stderr.writeln(
+          'INFO: There is no change of language file [${language.languageCode}].\n',
+        );
+      }
     }
   }
 
