@@ -52,7 +52,8 @@ class Generator {
       ///对比两个 json 是否相等
       bool changed = targetJson.length != resultJson.length;
       if (!changed) {
-        for (var entry in resultJson.entries) {
+        //从后往前开始检查
+        for (var entry in resultJson.entries.toList().reversed) {
           //旧 json 中，有任何一个 value ，和新 json 中的对应值不同，则表示发生了变化
           if (targetJson[entry.key] != entry.value) {
             changed = true;
