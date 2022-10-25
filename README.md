@@ -17,7 +17,7 @@ Run `flutter pub global activate april_json_translator` in project Terminal for 
 
 ## Usage
 
-1. Add this in your project pubspec.yaml with top level.
+1. Add this in your project `pubspec.yaml` with top level.
 
 ```yaml
 april_json_translator:
