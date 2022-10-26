@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:yaml/yaml.dart';
+import 'package:path/path.dart' as path;
 
 import 'language.dart';
 import 'utils.dart';
@@ -17,11 +18,8 @@ const String targetLanguagesNodeName = 'target_codes';
 ///源语言文件路径
 const String sourceFilePathNodeName = 'source_file_path';
 
-///目标语言翻译结果生成的文件名前缀
-const String filePrefixNodeName = 'file_prefix';
-
-///目标语言翻译结果生成的文件名后缀
-const String fileSuffixNodeName = 'file_suffix';
+///保留以 @ 开头的 key
+const String keepSpecialNodeName = 'keep_at_key';
 
 /// 配置在 pubspec.yaml 中的参数
 class PubspecConfig {
@@ -41,6 +39,9 @@ class PubspecConfig {
 
   ///生成的目标文件的后缀
   late final String resultFileSuffix;
+
+  ///是否保留描述
+  late final bool keepDescription;
 
   ///读取配置
   Future<void> readConfigs() async {
@@ -101,28 +102,29 @@ class PubspecConfig {
       );
     }
 
-    /// 找将要生成的目标文件的前缀
-    final dynamic filePrefix = parentNode[filePrefixNodeName];
-    if (filePrefix is String && filePrefix.isNotEmpty) {
-      resultFilePrefix = filePrefix;
+    /// 生成的目标文件的前后缀
+    final String fileName = path.basename(sourceFilePath);
+    //以 源语言编码进行分割
+    if (fileName.contains(sourceLanguage.languageCode)) {
+      //得到文件名 前缀、后缀
+      final List<String> fixList = fileName.split(sourceLanguage.languageCode);
+      resultFilePrefix = fixList.first;
+      resultFileSuffix = fixList.last;
     }
-    //没找到
+    //源语言和源文件不同名
     else {
       throw Exception(
-        '未找到 [$filePrefixNodeName] 节点，或者节点值 [$filePrefix] 不合法，该节点用于设置目标语言翻译之后，生成的文件名前缀',
+        '[$sourceFilePathNodeName] value [$sourceFilePath] is not contains'
+        ' [$sourceLanguageNodeName] value [${sourceLanguage.languageCode}]',
       );
     }
 
-    /// 找将要生成的目标文件的后缀
-    final dynamic fileSuffix = parentNode[fileSuffixNodeName];
-    if (fileSuffix is String && fileSuffix.isNotEmpty) {
-      resultFileSuffix = fileSuffix;
-    }
-    //没找到
-    else {
-      throw Exception(
-        '未找到 [$fileSuffixNodeName] 节点，或者节点值 [$fileSuffix] 不合法，该节点用于设置目标语言翻译之后，生成的文件名后缀',
-      );
+    /// 找是否需要保留描述 key
+    try {
+      final dynamic keepDesc = parentNode[keepSpecialNodeName];
+      keepDescription = keepDesc.toString() == 'true';
+    } catch (_) {
+      keepDescription = false;
     }
   }
 }

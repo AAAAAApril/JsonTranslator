@@ -32,7 +32,7 @@ class Translator {
       final HttpClientResponse response = await request.close();
       if (response.statusCode != 200) {
         stderr.writeln(
-          'ERROR: Translate to language [$targetCode] failed with statusCode [${response.statusCode}] on [$text].\n',
+          '\nERROR: Translate to language [$targetCode] failed with statusCode [${response.statusCode}] on [$text].\n',
         );
         return '';
       }
@@ -42,14 +42,14 @@ class Translator {
       );
       if (element == null) {
         stderr.writeln(
-          'ERROR: There is no div[class="result-container"] element in translate result html document.\n',
+          '\nERROR: There is no div[class="result-container"] element in translate result html document.\n',
         );
         return '';
       }
       return element.text;
     } catch (_) {
       stderr.writeln(
-        'ERROR: Error when translate to language [$targetCode] on [$text] \n',
+        '\nERROR: Error when translate to language [$targetCode] on [$text] \n',
       );
       stderr.writeln(_.toString() + '\n');
       return '';

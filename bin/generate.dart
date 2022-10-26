@@ -6,15 +6,15 @@ import 'package:april_json_translator/json_translator.dart';
 
 Future<void> main(List<String> args) async {
   try {
-    final Generator generator = Generator();
     final PubspecConfig config = PubspecConfig();
-    stderr.writeln('INFO: Reading configs from pubspec.yaml.\n');
+    stdout.writeln('INFO: Reading configs from pubspec.yaml.');
     await config.readConfigs();
-    stderr.writeln('INFO: Starting translate.\n');
+    final Generator generator = Generator();
+    stdout.writeln('INFO: Starting translate.');
     await generator.generateAsync(config);
-    stderr.writeln('INFO: Translate done.\n');
+    stdout.writeln('INFO: Translate done.');
   } catch (e) {
-    stderr.writeln('ERROR: Failed to translate json files.\n$e');
+    stderr.writeln('\nERROR: Failed to translate json files.\n$e');
     exit(2);
   }
 }
