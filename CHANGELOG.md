@@ -1,6 +1,7 @@
 ## 0.2.0
 
 * Optionally keep when the key starts with `@`.
+* Guaranteed correct format,like `Map` `List` `int` `double`, when generate result json file.
 
 ## 0.1.6
 
