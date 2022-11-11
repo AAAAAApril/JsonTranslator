@@ -1,3 +1,7 @@
+## 0.2.1
+
+* Always keep key who start with `@@`,and auto add `@@local` who source json contains it but target json not. 
+
 ## 0.2.0
 
 * Optionally keep when the key starts with `@`.

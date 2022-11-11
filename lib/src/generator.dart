@@ -46,8 +46,8 @@ class Generator {
       ///开始逐条翻译
       final Map<String, dynamic> resultJson = await _translate(
         keepDescription: config.keepDescription,
-        sourceLanguageCode: config.sourceLanguage.translateCode,
-        targetLanguageCode: language.translateCode,
+        sourceLanguage: config.sourceLanguage,
+        targetLanguage: language,
         sourceJson: sourceJson,
         targetJson: targetJson,
       );
@@ -91,10 +91,13 @@ class Generator {
     //目标语言编码
     required final Language targetLanguage,
     //源语言 json
-    required final Map<String, dynamic> sourceJson,
+    required Map<String, dynamic> sourceJson,
     //目标语言 json
-    required final Map<String, dynamic> targetJson,
+    required Map<String, dynamic> targetJson,
   }) async {
+    sourceJson = Map<String, dynamic>.of(sourceJson);
+    targetJson = Map<String, dynamic>.of(targetJson);
+
     ///最终结果
     final Map<String, dynamic> resultJson = <String, dynamic>{};
 
@@ -105,7 +108,12 @@ class Generator {
       'INFO: Language [${targetLanguage.translateCode}] translate starting.',
     );
 
-    //TODO
+    //源文件有 @@local，但目标文件没有
+    if (!targetJson.containsKey('@@local') &&
+        sourceJson.containsKey('@@local')) {
+      targetJson['@@local'] = targetLanguage.languageCode;
+      resultJson['@@local'] = targetLanguage.languageCode;
+    }
 
     ///循环翻译
     for (var entry in sourceJson.entries) {
@@ -148,17 +156,29 @@ class Generator {
 
       ///这个不需要翻译
       else {
-        //是描述字段，但不需要保留
-        if (sourceKey.startsWith('@') && !keepDescription) {
-          //跳过
-          continue;
+        //是描述字段
+        if (sourceKey.startsWith('@')) {
+          //默认保留所有两个 @@ 开头的 key
+          if (sourceKey.startsWith('@@')) {
+            stdout.writeln(
+              'INFO: Keep key [$sourceKey] who start with [@@] always.',
+            );
+          }
+          //不需要保留
+          else if (!keepDescription) {
+            stdout.writeln(
+              'INFO: Do not keep key [$sourceKey] who start with [@] .',
+            );
+            //跳过
+            continue;
+          }
         }
         //如果目标文件中的这个值为 null
         if (targetValue == null) {
           //则将源文件中的对应值给目标文件
           resultJson[sourceKey] = sourceValue;
         }
-        //不为 null
+        //不为 null，使用目标文件自己的值
         else {
           resultJson[sourceKey] = targetValue;
         }
