@@ -6,6 +6,8 @@ import 'package:path/path.dart' as path;
 import 'package:april_json_translator/src/configs.dart';
 import 'package:april_json_translator/src/utils.dart';
 
+import 'language.dart';
+
 ///执行器
 class Generator {
   const Generator();
@@ -85,9 +87,9 @@ class Generator {
     //是否需要保留描述
     required final bool keepDescription,
     //源语言编码
-    required final String sourceLanguageCode,
+    required final Language sourceLanguage,
     //目标语言编码
-    required final String targetLanguageCode,
+    required final Language targetLanguage,
     //源语言 json
     required final Map<String, dynamic> sourceJson,
     //目标语言 json
@@ -100,8 +102,10 @@ class Generator {
     Translator? translator;
 
     stdout.writeln(
-      'INFO: Language [$targetLanguageCode] translate starting.',
+      'INFO: Language [${targetLanguage.translateCode}] translate starting.',
     );
+
+    //TODO
 
     ///循环翻译
     for (var entry in sourceJson.entries) {
@@ -124,8 +128,8 @@ class Generator {
         else {
           ///开始翻译
           String value = await (translator ??= Translator()).translate(
-            sourceCode: sourceLanguageCode,
-            targetCode: targetLanguageCode,
+            sourceCode: sourceLanguage.translateCode,
+            targetCode: targetLanguage.translateCode,
             text: sourceValue,
           );
           //赋值翻译结果
@@ -136,7 +140,7 @@ class Generator {
           else {
             // 翻译出错时，不添加这个结果
             stderr.writeln(
-              '\nERROR: Translate to language [$targetLanguageCode] failed for key [$sourceKey], this key will be remove from result json.\n',
+              '\nERROR: Translate to language [${targetLanguage.translateCode}] failed for key [$sourceKey], this key will be remove from result json.\n',
             );
           }
         }
@@ -162,7 +166,7 @@ class Generator {
     }
 
     stdout.writeln(
-      'INFO: Language [$targetLanguageCode] translate completed.',
+      'INFO: Language [${targetLanguage.translateCode}] translate completed.',
     );
 
     ///翻译完成之后，关闭翻译器
