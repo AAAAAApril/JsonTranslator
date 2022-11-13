@@ -6,6 +6,7 @@ import 'package:path/path.dart' as path;
 import 'package:april_json_translator/src/configs.dart';
 import 'package:april_json_translator/src/utils.dart';
 
+import 'description.dart';
 import 'language.dart';
 
 ///执行器
@@ -134,15 +135,31 @@ class Generator {
         }
         //其他情况需要翻译
         else {
-          ///开始翻译
-          String value = await (translator ??= Translator()).translate(
-            sourceCode: sourceLanguage.translateCode,
-            targetCode: targetLanguage.translateCode,
-            text: sourceValue,
+          ///当前翻译节点的描述
+          final Description description = Description(
+            sourceJson['@${sourceKey}'] as Object?,
           );
+
+          final String translateResult;
+
+          ///需要翻译
+          if (description.needTranslate) {
+            ///开始翻译
+            translateResult = await (translator ??= Translator()).translate(
+              sourceCode: sourceLanguage.translateCode,
+              targetCode: targetLanguage.translateCode,
+              text: sourceValue,
+            );
+          }
+
+          ///不需要翻译
+          else {
+            //直接使用源文字
+            translateResult = sourceValue;
+          }
           //赋值翻译结果
-          if (value.isNotEmpty) {
-            resultJson[sourceKey] = value;
+          if (translateResult.isNotEmpty) {
+            resultJson[sourceKey] = translateResult;
           }
           //翻译结果为空，表示出错了
           else {

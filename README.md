@@ -44,3 +44,14 @@ april_json_translator:
 - The source json key will be remove from result json when translate failed.
 - If you want to keep the key witch start with `@`, add `keep_at_key: 'true'`, or it will be remove
   from result json but only keep in source json.
+- If you do not want to translate some text, you can set `translate` with value `false` in
+  descriptions like:
+
+```json
+{
+  "hisName": "His name is",
+  "@hisName": {
+    "translate": false
+  }
+}
+```

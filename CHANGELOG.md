@@ -1,3 +1,7 @@
+## 0.2.2
+
+* If you do not want to translate some text, you can set `translate` with value `false` in descriptions.
+
 ## 0.2.1
 
 * Always keep key who start with `@@`,and auto add `@@local` who source json contains it but target json not. 

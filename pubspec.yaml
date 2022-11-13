@@ -1,6 +1,6 @@
 name: april_json_translator
 description: A tool that can translate json files from one language to another.
-version: 0.2.1
+version: 0.2.2
 homepage: 'https://github.com/AAAAAApril/JsonTranslator'
 
 environment:
