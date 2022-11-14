@@ -109,11 +109,11 @@ class Generator {
       'INFO: Language [${targetLanguage.translateCode}] translate starting.',
     );
 
-    //源文件有 @@local，但目标文件没有
-    if (!targetJson.containsKey('@@local') &&
-        sourceJson.containsKey('@@local')) {
-      targetJson['@@local'] = targetLanguage.languageCode;
-      resultJson['@@local'] = targetLanguage.languageCode;
+    //源文件有 @@locale，但目标文件没有
+    if (!targetJson.containsKey('@@locale') &&
+        sourceJson.containsKey('@@locale')) {
+      targetJson['@@locale'] = targetLanguage.languageCode;
+      resultJson['@@locale'] = targetLanguage.languageCode;
     }
 
     ///循环翻译
